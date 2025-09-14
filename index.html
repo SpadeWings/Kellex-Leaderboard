@@ -5,8 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kellex Schools - Nova Vanguards Leaderboard</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
+    
+    
+
+  <!-- Particles.js Background -->
+  <div id="particles-js"></div>
+
   <header>
     <h1>Kellex Schools</h1>
     <h2>Nova Vanguards - Command Nexus</h2>
@@ -14,7 +21,8 @@
   </header>
 
   <main>
-    <table>
+    <!-- Desktop table -->
+    <table id="leaderboardTable">
       <thead>
         <tr>
           <th>Rank</th>
@@ -24,14 +32,21 @@
           <th>Change</th>
         </tr>
       </thead>
-      <tbody id="leaderboardBody">
-        <!-- JS will populate -->
-      </tbody>
+      <tbody id="leaderboardBody"></tbody>
     </table>
+
+    <!-- Mobile cards -->
+    <div id="leaderboardCards" class="cards-container"></div>
   </main>
 
+  <footer>
+    <p>Sir Paul</p>
+    <p>Computer Studies Teacher and Coding Club Instructor</p>
+    <p>&copy; 2025</p>
+  </footer>
+
+  <!-- Firebase + leaderboard JS (same as before) -->
   <script type="module">
-    // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -54,8 +69,10 @@
       const q = query(collection(db, "learners"), orderBy("score", "desc"));
       const snapshot = await getDocs(q);
 
-      const leaderboardBody = document.getElementById("leaderboardBody");
-      leaderboardBody.innerHTML = "";
+      const tableBody = document.getElementById("leaderboardBody");
+      const cardsContainer = document.getElementById("leaderboardCards");
+      tableBody.innerHTML = "";
+      cardsContainer.innerHTML = "";
 
       let rank = 1;
       snapshot.forEach(doc => {
@@ -63,31 +80,41 @@
         const change = getChangeSymbol(data.name, data.score);
         previousScores[data.name] = data.score;
 
-        const sparkles = renderSparkles(data.score);
+        const starsHTML = renderStars(data.score);
+
+        // Table row
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${rank}</td>
           <td>${data.name}</td>
           <td>${data.class}</td>
-          <td>${sparkles}</td>
+          <td>${starsHTML}</td>
           <td>${change}</td>
         `;
-        leaderboardBody.appendChild(row);
+        tableBody.appendChild(row);
+
+        // Mobile card
+        const card = document.createElement("div");
+        card.classList.add("learner-card");
+        card.innerHTML = `
+          <p class="rank">#${rank}</p>
+          <p class="name">${data.name}</p>
+          <p class="class">${data.class}</p>
+          <p class="score">${data.score} <span class="sparkle">⭐</span></p>
+          <p class="change">${change}</p>
+        `;
+        cardsContainer.appendChild(card);
+
         rank++;
       });
     }
 
-    function renderSparkles(score) {
-      let color = '';
-      if(score <= 100) color = '#ffd700';        // light gold
-      else if(score <= 500) color = '#ffea00';   // bright gold
-      else color = '#ff8c00';                    // fiery orange
-
-      if(score <= 10) return `<span class="sparkles" style="color:${color}">${'⭐'.repeat(score)}</span>`;
-      return `<span class="sparkles" style="color:${color}">${score}⭐</span>`;
+    function renderStars(score) {
+      // numeric score + one visible star icon
+      return `<span class="score-num">${score} <span class="sparkle">⭐</span></span>`;
     }
 
-    function getChangeSymbol(name, score) {
+    function getChangeSymbol(name, score){
       if(previousScores[name] === undefined) return '';
       const prev = previousScores[name];
       if(score > prev) return '<span class="up">⬆️</span>';
@@ -96,8 +123,25 @@
     }
 
     loadLeaderboard();
-    // Optional: refresh leaderboard every 10 seconds
-    setInterval(loadLeaderboard, 10000);
+    setInterval(loadLeaderboard, 10000); // auto-refresh every 10s
   </script>
+
+  <!-- Particles.js config -->
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {"value": 120, "density": {"enable": true,"value_area":800}},
+        "color": {"value": "#ffffff"},
+        "shape": {"type":"circle"},
+        "opacity": {"value":0.8,"random":true,"anim":{"enable":true,"speed":1,"opacity_min":0.3,"sync":false}},
+        "size":{"value":2,"random":true},
+        "line_linked":{"enable":false},
+        "move":{"enable":true,"speed":0.2,"direction":"none","random":true,"straight":false,"out_mode":"out"}
+      },
+      "interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":false},"onclick":{"enable":false}}},
+      "retina_detect":true
+    });
+  </script>
+
 </body>
 </html>
