@@ -77,4 +77,4 @@ footer { margin-top:2rem; text-align:center; color:#ffd700; text-shadow:0 0 5px 
 @media(max-width:700px){
   table { display:none; }
   .cards-container { display:flex; }
-        }
+}
