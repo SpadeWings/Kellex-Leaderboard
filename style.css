@@ -1,156 +1,80 @@
-/* Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+body, html {
+  height: 100%;
+  overflow-y: auto;
+  background:#000;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:1rem;
+  position:relative;
 }
 
-/* Body & Sparkle Background */
-body {
-  min-height: 100vh;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  background: radial-gradient(ellipse at bottom, #1a1a2e 0%, #090a1a 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px);
-  background-size: 20px 20px;
-  pointer-events: none;
-  animation: sparkle 15s linear infinite;
-  z-index: 0;
-}
-
-@keyframes sparkle {
-  0% { transform: translate(0,0) rotate(0deg); }
-  100% { transform: translate(-400px,400px) rotate(360deg); }
-}
+/* Particles.js canvas */
+#particles-js { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
 /* Header */
 header {
-  text-align: center;
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 1;
+  text-align:center;
+  margin-bottom:1.5rem;
+  position:relative;
+  z-index:1;
 }
+header h1 { font-size:2.5rem; color:#ffd700; text-shadow:0 0 10px #ffd700;}
+header h2 { font-size:1.5rem; color:#fff; text-shadow:0 0 5px #ffb700;}
+header h3 { font-size:1.2rem; color:#fffc; text-shadow:0 0 5px #fffc;}
 
-header h1 {
-  font-size: 2.5rem;
-  color: #ffd700;
-  text-shadow: 0 0 10px #ffd700, 0 0 20px #ffb700, 0 0 30px #ffe347;
-}
-
-header h2 {
-  font-size: 1.5rem;
-  color: #fff;
-  margin-top: 0.5rem;
-  text-shadow: 0 0 5px #ffb700;
-}
-
-header h3 {
-  font-size: 1.2rem;
-  color: #fffc;
-  margin-top: 0.5rem;
-  text-shadow: 0 0 5px #fffc;
-}
-
-/* Leaderboard Table */
+/* Table */
 table {
-  width: 100%;
-  max-width: 900px;
-  border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-  position: relative;
-  z-index: 1;
+  width:100%;
+  max-width:900px;
+  border-collapse:collapse;
+  background: rgba(255,255,255,0.05);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(255,215,0,0.2);
+  position:relative;
+  z-index:1;
 }
+thead { background: rgba(255,215,0,0.3); }
+thead th { padding:12px; color:#fff; font-weight:700; text-shadow:0 0 5px #ffd700; }
+tbody tr:nth-child(even){ background: rgba(255,255,255,0.05); }
+tbody tr:hover{ background: rgba(255,215,0,0.1);}
+td { padding:10px; text-align:center; }
 
-thead {
-  background: rgba(255, 215, 0, 0.3);
-}
+/* Sparkle and score */
+.sparkle { color:#fff; font-size:1.2rem; text-shadow:0 0 5px #fff; animation:twinkle 1.5s infinite alternate;}
+@keyframes twinkle {0%{opacity:0.6;}50%{opacity:1;}100%{opacity:0.6;}}
 
-thead th {
-  padding: 15px;
-  color: #fff;
-  font-weight: 700;
-  text-shadow: 0 0 5px #ffd700;
-}
+/* Up/down arrows */
+.up { color:#00ff00; font-weight:700; animation:pulse 1s infinite; }
+.down { color:#ff0000; font-weight:700; animation:pulse 1s infinite; }
+@keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
 
-tbody tr {
-  transition: transform 0.3s, background 0.3s;
+/* Mobile Cards */
+.cards-container { display:none; flex-direction:column; width:100%; max-width:400px; position:relative; z-index:1; }
+.learner-card {
+  background: rgba(255,255,255,0.05);
+  margin:10px 0;
+  padding:10px;
+  border-radius:10px;
+  box-shadow:0 0 15px rgba(255,255,255,0.1);
+  text-align:center;
 }
+.learner-card .rank{ font-weight:700; font-size:1rem; }
+.learner-card .name{ font-weight:600; font-size:1.2rem; }
+.learner-card .class{ font-size:1rem; color:#ffd700; }
+.learner-card .score{ font-size:1.2rem; font-weight:700; color:#fff; }
 
-tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-tbody tr:hover {
-  transform: scale(1.02);
-  background: rgba(255, 215, 0, 0.1);
-}
-
-/* Cells */
-td {
-  padding: 12px;
-  text-align: center;
-}
-
-/* Sparkles */
-.sparkles {
-  font-size: 1.2rem;
-  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
-}
-
-/* Movement arrows */
-.up {
-  color: #00ff00;
-  font-weight: 700;
-  animation: pulse 1s infinite;
-}
-
-.down {
-  color: #ff0000;
-  font-weight: 700;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
+/* Footer */
+footer { margin-top:2rem; text-align:center; color:#ffd700; text-shadow:0 0 5px #ffd700; font-size:0.9rem; position:relative; z-index:1; }
 
 /* Responsive */
-@media(max-width: 600px){
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-  thead tr { display: none; }
-  tbody td {
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
-  }
-  tbody td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 15px;
-    font-weight: 700;
-    color: #ffd700;
-  }
-}
+@media(max-width:700px){
+  table { display:none; }
+  .cards-container { display:flex; }
+        }
