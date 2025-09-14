@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kellex Schools - Nova Vanguards Leaderboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Kellex Schools</h1>
+    <h2>Nova Vanguards - Command Nexus</h2>
+    <h3>Secondary Learners Leaderboard</h3>
+  </header>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Score</th>
+          <th>Change</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboardBody">
+        <!-- JS will populate -->
+      </tbody>
+    </table>
+  </main>
+
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBS_oX2uqItfNqd-7G9TSHnP-RUxviNLWc",
+      authDomain: "leaderboard-900f1.firebaseapp.com",
+      projectId: "leaderboard-900f1",
+      storageBucket: "leaderboard-900f1.firebasestorage.app",
+      messagingSenderId: "511470946131",
+      appId: "1:511470946131:web:96bfb89e797a6bf12f03a6",
+      measurementId: "G-WNNMR7PYYD"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let previousScores = {};
+
+    async function loadLeaderboard() {
+      const q = query(collection(db, "learners"), orderBy("score", "desc"));
+      const snapshot = await getDocs(q);
+
+      const leaderboardBody = document.getElementById("leaderboardBody");
+      leaderboardBody.innerHTML = "";
+
+      let rank = 1;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const change = getChangeSymbol(data.name, data.score);
+        previousScores[data.name] = data.score;
+
+        const sparkles = renderSparkles(data.score);
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${rank}</td>
+          <td>${data.name}</td>
+          <td>${data.class}</td>
+          <td>${sparkles}</td>
+          <td>${change}</td>
+        `;
+        leaderboardBody.appendChild(row);
+        rank++;
+      });
+    }
+
+    function renderSparkles(score) {
+      let color = '';
+      if(score <= 100) color = '#ffd700';        // light gold
+      else if(score <= 500) color = '#ffea00';   // bright gold
+      else color = '#ff8c00';                    // fiery orange
+
+      if(score <= 10) return `<span class="sparkles" style="color:${color}">${'⭐'.repeat(score)}</span>`;
+      return `<span class="sparkles" style="color:${color}">${score}⭐</span>`;
+    }
+
+    function getChangeSymbol(name, score) {
+      if(previousScores[name] === undefined) return '';
+      const prev = previousScores[name];
+      if(score > prev) return '<span class="up">⬆️</span>';
+      if(score < prev) return '<span class="down">⬇️</span>';
+      return '';
+    }
+
+    loadLeaderboard();
+    // Optional: refresh leaderboard every 10 seconds
+    setInterval(loadLeaderboard, 10000);
+  </script>
+</body>
+</html>
