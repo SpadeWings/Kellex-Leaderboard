@@ -10,71 +10,59 @@ body, html {
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:1rem;
   position:relative;
 }
 
-/* Particles.js canvas */
 #particles-js { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
-/* Header */
-header {
-  text-align:center;
-  margin-bottom:1.5rem;
-  position:relative;
-  z-index:1;
-}
+.sun { position:absolute; top:20px; left:20px; width:100px; animation:rotateSun 60s linear infinite; z-index:1; }
+.moon { position:absolute; top:80px; left:80%; width:80px; animation:rotateMoon 120s linear infinite; z-index:1; }
+.planet { position:absolute; top:150px; width:60px; animation:orbit 40s linear infinite; z-index:1; }
+.planet1 { left:10%; }
+.planet2 { left:60%; }
+
+@keyframes rotateSun { 0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+@keyframes rotateMoon { 0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+@keyframes orbit { 0%{transform:rotate(0deg) translateX(50px) rotate(0deg);} 100%{transform:rotate(360deg) translateX(50px) rotate(-360deg);} }
+
+header { text-align:center; margin-bottom:1.5rem; z-index:1; position:relative; }
 header h1 { font-size:2.5rem; color:#ffd700; text-shadow:0 0 10px #ffd700;}
 header h2 { font-size:1.5rem; color:#fff; text-shadow:0 0 5px #ffb700;}
 header h3 { font-size:1.2rem; color:#fffc; text-shadow:0 0 5px #fffc;}
 
-/* Table */
-table {
-  width:100%;
-  max-width:900px;
-  border-collapse:collapse;
-  background: rgba(255,255,255,0.05);
-  border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 0 20px rgba(255,215,0,0.2);
-  position:relative;
-  z-index:1;
-}
+table { width:100%; max-width:900px; border-collapse:collapse; background: rgba(255,255,255,0.05); border-radius:10px; box-shadow:0 0 20px rgba(255,215,0,0.2); z-index:1; position:relative; }
 thead { background: rgba(255,215,0,0.3); }
 thead th { padding:12px; color:#fff; font-weight:700; text-shadow:0 0 5px #ffd700; }
 tbody tr:nth-child(even){ background: rgba(255,255,255,0.05); }
 tbody tr:hover{ background: rgba(255,215,0,0.1);}
 td { padding:10px; text-align:center; }
 
-/* Sparkle and score */
-.sparkle { color:#fff; font-size:1.2rem; text-shadow:0 0 5px #fff; animation:twinkle 1.5s infinite alternate;}
+.sparkle { color:#fff; font-size:1.2rem; text-shadow:0 0 10px #fff; animation:twinkle 1.5s infinite alternate;}
 @keyframes twinkle {0%{opacity:0.6;}50%{opacity:1;}100%{opacity:0.6;}}
 
-/* Up/down arrows */
 .up { color:#00ff00; font-weight:700; animation:pulse 1s infinite; }
 .down { color:#ff0000; font-weight:700; animation:pulse 1s infinite; }
 @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
 
-/* Mobile Cards */
-.cards-container { display:none; flex-direction:column; width:100%; max-width:400px; position:relative; z-index:1; }
-.learner-card {
-  background: rgba(255,255,255,0.05);
-  margin:10px 0;
-  padding:10px;
-  border-radius:10px;
-  box-shadow:0 0 15px rgba(255,255,255,0.1);
-  text-align:center;
-}
-.learner-card .rank{ font-weight:700; font-size:1rem; }
-.learner-card .name{ font-weight:600; font-size:1.2rem; }
-.learner-card .class{ font-size:1rem; color:#ffd700; }
-.learner-card .score{ font-size:1.2rem; font-weight:700; color:#fff; }
+footer { margin-top:2rem; text-align:center; z-index:1; position:relative; color:#fff; text-shadow:0 0 5px #ffd700; }
 
-/* Footer */
-footer { margin-top:2rem; text-align:center; color:#ffd700; text-shadow:0 0 5px #ffd700; font-size:0.9rem; position:relative; z-index:1; }
+.cards-container { display:none; flex-direction:column; width:90%; margin-top:1rem; }
+.learner-card { background: rgba(255,255,255,0.05); padding:10px; margin-bottom:10px; border-radius:10px; box-shadow:0 0 10px rgba(255,215,0,0.2); text-align:center; }
 
-/* Responsive */
-@media(max-width:700px){
+/* Responsive for mobile */
+@media(max-width:768px){
   table { display:none; }
   .cards-container { display:flex; }
 }
+
+/* 🔹 Top 3 Rank Badges */
+.rank-1 { background: gold; color: #000; border-radius: 8px; padding: 2px 6px; font-weight: bold; }
+.rank-2 { background: silver; color: #000; border-radius: 8px; padding: 2px 6px; font-weight: bold; }
+.rank-3 { background: #cd7f32; color: #fff; border-radius: 8px; padding: 2px 6px; font-weight: bold; }
+
+/* 🔹 Name Colors for Top 3 */
+.name-1 { color: gold; font-weight: 700; }
+.name-2 { color: silver; font-weight: 700; }
+.name-3 { color: #cd7f32; font-weight: 700; }
+
+
